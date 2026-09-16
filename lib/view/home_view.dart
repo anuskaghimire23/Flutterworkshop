@@ -1,6 +1,8 @@
+import 'package:codeit/view/about_view.dart';
 import 'package:codeit/widgets/coursecard_widgets.dart';
 import 'package:codeit/widgets/titlecard_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeView extends StatefulWidget {
   const new({super.key});
@@ -13,16 +15,25 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:Drawer(),
+      // drawer:Drawer(),
       appBar: AppBar(title: Text("Code IT")),
       body: SingleChildScrollView(
         child: Column(
           children: [
+
+            FilledButton(onPressed: (){
+Get.to( AboutView());
+            }, 
+            child: Text("Go To About Page")),
             // w1
-            Container(
-              height: 300,
-              width: double.infinity,
-              color: Colors.redAccent.shade100,
+            InkWell(
+              onTap: (){
+                print("Tapped");
+              },
+              child: Container(
+                height: 300,
+                width: double.infinity,
+              ),
             ),
             SizedBox(height: 10),
             // w2

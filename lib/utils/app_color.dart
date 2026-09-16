@@ -1,0 +1,3 @@
+// class AppColor {
+//   Color primary
+// }
