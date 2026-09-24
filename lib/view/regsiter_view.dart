@@ -1,4 +1,5 @@
 import 'package:ecommerce/controller/auth_controller.dart';
+import 'package:ecommerce/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -42,7 +43,8 @@ class RegsiterView extends GetView<AuthController> {
                 ),
                 Gap(20),
                 // w3 Password
-                TextFormField(
+                Obx((){
+                return  TextFormField(
                   controller: controller.password,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -50,12 +52,17 @@ class RegsiterView extends GetView<AuthController> {
                     label: Text("Password"),
                     prefixIcon: Icon(Icons.password),
                     suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        controller.togglePassword();
+                      },
                       icon: Icon(Icons.visibility),
                     ),
                   ),
+                  obscureText: controller.hidePassword.value,
                    validator: (value)=>value!.isEmpty?'Password Required':null,
-                ),
+                );
+            
+               }),
             Gap(20),
                 TextFormField(
                   controller: controller.whatsapp,
@@ -84,7 +91,12 @@ class RegsiterView extends GetView<AuthController> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                   Text("Already have an account?"),
-                  Text("Login")
+                  InkWell(
+                    onTap: (){
+                       Get.toNamed(AppRoutes.login);
+                    },child: Text("Login"),
+                  )
+                  
                 ],)
               ],
             ),

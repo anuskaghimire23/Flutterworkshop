@@ -1,12 +1,13 @@
 import 'package:ecommerce/bindings/controller_binding.dart';
 import 'package:ecommerce/routes/app_pages.dart';
-import 'package:ecommerce/view/login_view.dart';
-import 'package:ecommerce/view/regsiter_view.dart';
 import 'package:ecommerce/view/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+
+void main() async {
+ await GetStorage.init();
   runApp(const MyApp());
 }
 

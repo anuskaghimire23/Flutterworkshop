@@ -1,3 +1,5 @@
+import 'package:ecommerce/controller/storage_controller.dart';
+import 'package:ecommerce/model/login_model.dart';
 import 'package:ecommerce/model/register_model.dart';
 import 'package:ecommerce/routes/app_routes.dart';
 import 'package:ecommerce/service/auth_service.dart';
@@ -8,6 +10,8 @@ import 'package:get/state_manager.dart';
 class AuthController extends GetxController {
   var isLoggedIn = false.obs;
   var isLoading = false.obs;
+  var hidePassword = true.obs;
+  var loginMessage = LoginModel(success: false, token: null, message: null).obs;
   var message = RegisterModel(success: false, token: null, message: null).obs;
 
   // Text Editinf Controller
@@ -17,9 +21,22 @@ class AuthController extends GetxController {
   var whatsapp = TextEditingController();
 
   void checkAuth() {
-    Future.delayed(Duration(seconds: 3), () {
+   var token = StorageController().getToken();
+   if(token!=null){
+    // Home page ma jauu token xa vane
+    print("Token found: $token");
+ 
+   
+     Future.delayed(Duration(seconds: 3), () {
+      Get.offNamed(AppRoutes.home);
+    });
+   }else{
+    // Login page ma jauu token xaina vane
+    print("Token not found");
+     Future.delayed(Duration(seconds: 3), () {
       Get.offNamed(AppRoutes.login);
     });
+   }
   }
 
   // Register
@@ -38,6 +55,37 @@ class AuthController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  // login
+  Future login() async {
+    try {
+      isLoading(true);
+      var resposne = await AuthService.login(email.text, password.text);
+      if (resposne.statusCode == 200) {
+        print("${loginMessage.value.success}");
+         print("${loginMessage.value.token}");
+        loginMessage.value = LoginModel.fromJson(resposne.data);
+
+        if(loginMessage.value.success == true){
+          StorageController().saveToken(loginMessage.value.token!);
+          Get.offNamed(AppRoutes.home);
+        }
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+
+// logout 
+void logout(){
+  StorageController().deleteToken();
+  Get.offNamed(AppRoutes.login);
+}
+  // Password visibility
+  void togglePassword() {
+    hidePassword.value = !hidePassword.value;
   }
 
   @override
