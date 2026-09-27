@@ -1,5 +1,6 @@
 import 'package:ecommerce/controller/auth_controller.dart';
 import 'package:ecommerce/controller/product_controller.dart';
+import 'package:ecommerce/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,11 +56,15 @@ class HomeView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     var product = productController.products.value.data[index];
                     return ListTile(
+                      onTap: (){
+                       Get.toNamed(AppRoutes.product , arguments: product) ;
+                      },
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage("${product.image}"),
                       ),
                       title: Text("${product.title}"),
                       subtitle: Text("${product.price}"),
+                      trailing: Icon(Icons.arrow_right_rounded),
                     );
                   },
                 ),

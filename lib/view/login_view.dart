@@ -1,6 +1,7 @@
 import 'package:ecommerce/controller/auth_controller.dart';
 import 'package:ecommerce/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -65,7 +66,9 @@ class LoginView extends GetView<AuthController> {
                   height: 50,
                   child: FilledButton(onPressed: () {
                     if(key.currentState!.validate()){
+                      Loader.show(context);
                       controller.login();
+                      Loader.hide();
                     }
                   }, child: Text("Login")),
                 ),
