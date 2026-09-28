@@ -1,4 +1,5 @@
 import 'package:ecommerce/routes/app_routes.dart';
+import 'package:ecommerce/view/cart_view.dart';
 import 'package:ecommerce/view/home_view.dart';
 import 'package:ecommerce/view/login_view.dart';
 import 'package:ecommerce/view/product_view.dart';
@@ -13,6 +14,7 @@ class AppPages {
     GetPage(name: AppRoutes.register, page: ()=> RegsiterView()),
       GetPage(name: AppRoutes.home, page: ()=> HomeView()),
       GetPage(name: AppRoutes.product, page: ()=> ProductView()),
+       GetPage(name: AppRoutes.cart, page: ()=> CartView()),
      
   ];
 }
