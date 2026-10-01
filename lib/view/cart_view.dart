@@ -12,66 +12,46 @@ class CartView extends GetView<CartController> {
       appBar: AppBar(
         title: Text("Cart Page"),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value == true) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: controller.cartItems.value.data.length,
-                  itemBuilder: (BuildContext content, int index) {
-                    var product =
-                        controller.cartItems.value.data[index];
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Obx((){
+              return controller.isLoading.value == true ? Center(child: LinearProgressIndicator(),) :
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.cartItems.value.data.length,
+                itemBuilder: (BuildContext content,int index){
+                  var product = controller.cartItems.value.data[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage("${product.productImage}"),
+                    ),
+                    title: Text("${product.productName}"),
+                    subtitle: Text("(${product.quantity}) x ${product.sellingPrice} = ${product.totalAmt}"),
+                    trailing: IconButton(onPressed: (){
+                      Get.defaultDialog(
+                        title: "Warning",
+                        content: Text("Do you want to delete?"),
+                        actions: [
+                          OutlinedButton(onPressed: (){
+                            Get.back();
+                          }, child: Text("No")),
+                          FilledButton(onPressed: (){}, child: Text("Yes")),
+                        ]
+                      );
+                    }, icon: Icon(Icons.delete)),
+                  );
+                });
+              
+            }),
 
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage("${product.productImage}"),
-                      ),
-                      title: Text("${product.productName}"),
-                      subtitle: Text(
-                        "(${product.quantity}) x ${product.sellingPrice} = ${product.totalAmt}",
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          Get.defaultDialog(
-                            title: "Warning",
-                            content: Text("Do you want to delete?"),
-                            actions: [
-                              OutlinedButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: Text("No"),
-                              ),
-                              FilledButton(
-                                onPressed: () {
-                                  Get.back();
-                                  controller.removeFromCart(
-                                    product.cartId!,
-                                  );
-                                },
-                                child: Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                        icon: Icon(Icons.delete),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          );
-        }
-      }),
+            FilledButton(onPressed: (){
+              Get.toNamed(AppRoutes.order);
+            }, child: Text("Proceed to Checkout"))
+          ],
+        ),
+      ),
     );
   }
 }
